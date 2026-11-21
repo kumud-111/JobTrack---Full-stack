@@ -1,0 +1,99 @@
+{
+  "info": {
+    "name": "JobTrack API",
+    "description": "Postman requests for JobTrack backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "applicationId",
+      "value": "1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/health"
+      }
+    },
+    {
+      "name": "Create application",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n \"company\":\"Example Technologies\",\n \"role\":\"Software Engineer Intern\",\n \"location\":\"Remote\",\n \"status\":\"APPLIED\",\n \"notes\":\"Demo record\"\n}"
+        },
+        "url": "{{baseUrl}}/api/applications"
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "if (pm.response.code === 201) { pm.collectionVariables.set('applicationId', pm.response.json().data.id); }"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "List applications",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/applications"
+      }
+    },
+    {
+      "name": "Search",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/applications?search=Engineer"
+      }
+    },
+    {
+      "name": "Statistics",
+      "request": {
+        "method": "GET",
+        "url": "{{baseUrl}}/api/stats"
+      }
+    },
+    {
+      "name": "Update",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{ \"status\":\"INTERVIEW\" }"
+        },
+        "url": "{{baseUrl}}/api/applications/{{applicationId}}"
+      }
+    },
+    {
+      "name": "Delete",
+      "request": {
+        "method": "DELETE",
+        "url": "{{baseUrl}}/api/applications/{{applicationId}}"
+      }
+    }
+  ]
+}
